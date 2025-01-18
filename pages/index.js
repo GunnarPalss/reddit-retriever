@@ -4,20 +4,14 @@ import { useEffect, useState } from 'react';
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [subreddit, setSubreddit] = useState('technology'); // Default subreddit
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
+        const fetchPosts = async () => {
         const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
         const data = await response.json();
         setPosts(data);
         setLoading(false);
-      } catch (err) {
-        setError('Failed to load posts');
-        setLoading(false);
-      }
     };
 
     fetchPosts();
@@ -48,9 +42,8 @@ const Home = () => {
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-      {!loading && !error && (
+      {!loading && (
         <ul style={{ listStyle: 'none', padding: '0' }}>
           {posts.map((post) => (
             <li key={post.data.id} style={{ margin: '10px 0' }}>
