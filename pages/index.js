@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 const Home = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetch('/api/getPosts?subreddit=Boltinn')
@@ -11,15 +10,10 @@ const Home = () => {
       .then(data => {
         setPosts(data);
         setLoading(false);
-      })
-      .catch(err => {
-        setError('Failed to fetch data');
-        setLoading(false);
       });
   }, []);
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
     <div>
