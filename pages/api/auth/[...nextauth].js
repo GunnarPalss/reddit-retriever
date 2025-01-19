@@ -1,16 +1,14 @@
-import NextAuth from 'next-auth';
-import RedditProvider from 'next-auth/providers/reddit';
+import NextAuth from "next-auth";
+import RedditProvider from "next-auth/providers/reddit";
 
 export default NextAuth({
   providers: [
     RedditProvider({
       clientId: process.env.REDDIT_CLIENT_ID,
       clientSecret: process.env.REDDIT_CLIENT_SECRET,
-      authorizationUrl: 'https://www.reddit.com/api/v1/authorize',
-      scope: 'read',
+      authorization: 'https://www.reddit.com/api/v1/authorize',
     }),
   ],
-  secret: process.env.JWT_SECRET,
   callbacks: {
     async jwt({ token, account }) {
       if (account) {
@@ -24,5 +22,9 @@ export default NextAuth({
       }
       return session;
     },
+  },
+  secret: process.env.JWT_SECRET,
+  session: {
+    strategy: 'jwt',
   },
 });
