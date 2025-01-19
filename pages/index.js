@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import mockData from '../data/mockdata'
 
 export default function Home() {
   const { data: session } = useSession();
@@ -7,21 +8,27 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [useMockData, setUseMockData] = useState(true);
 
-  const subreddit = "pics";
+  const subreddit = "news";
 
   const fetchPosts = async () => {
     if (!subreddit) return;
-    setLoading(true);
-    const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
-    const data = await response.json();
-    setPosts(data);
-    setLoading(false);
+    if (useMockData) {
+      setPosts(mockData)
+    }
+    else {
+      setLoading(true);
+      const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
+      const data = await response.json();
+      setPosts(data);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [useMockData]);
 
   const openModal = (post) => {
     setSelectedPost(post);
@@ -58,8 +65,21 @@ export default function Home() {
           </div>
         )}
         <p className="mt-4 text-lg text-gray-600">
-          <strong>Posts from r/{subreddit}</strong>
+          <strong>{useMockData ? 'Posts from mock data' : `Posts from r/${subreddit}`}</strong>
         </p>
+        <button
+          onClick={() => setUseMockData((prev) => !prev)} // Toggle between mock and real data
+          style={{
+            padding: '8px 12px',
+            backgroundColor: useMockData ? '#f39c12' : '#3498db',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+        {useMockData ? 'Switch to Real Data' : 'Switch to Mock Data'}
+        </button>
       </div>
 
       {loading && <p className="mt-4 text-gray-500">Loading...</p>}
