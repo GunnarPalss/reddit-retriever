@@ -10,11 +10,12 @@ export default function Home() {
   const fetchPosts = async () => {
     if (!subreddit) return;
     setLoading(true);
+    
       const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
-
       const data = await response.json();
       setPosts(data);
-
+    
+    
       setLoading(false);
     
   };
