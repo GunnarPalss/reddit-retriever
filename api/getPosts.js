@@ -1,4 +1,4 @@
-import axios from '/var/task/node_modules/axios';
+const axios = require('axios')
 
 export default async function handler(req, res) {
   const { subreddit = 'technology' } = req.query; // Default subreddit: 'technology'
