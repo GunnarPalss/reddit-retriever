@@ -16,9 +16,11 @@ export default function Home() {
     if (!subreddit) return;
     if (useMockData) {
       setPosts(mockData)
+      setLoading(false)
     }
     else {
       setLoading(true);
+      setPosts('')
       const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
       const data = await response.json();
       setPosts(data);
