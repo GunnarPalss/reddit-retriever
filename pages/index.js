@@ -12,6 +12,7 @@ const Home = () => {
         const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
         console.log(response)
         const data = await response.json();
+        console.log(data)
         setPosts(data);
         setLoading(false);
     };
