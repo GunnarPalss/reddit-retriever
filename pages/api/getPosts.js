@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  try {
     const { subreddit } = req.query;
     const { data } = await axios.get(`https://www.reddit.com/r/${subreddit}.json`);
 
@@ -13,7 +12,5 @@ export default async function handler(req, res) {
     }));
 
     res.status(200).json(posts);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch posts' });
-  }
+
 }
