@@ -6,7 +6,7 @@ export default async function handler(req, res) {
 
   const { subreddit } = req.query;
   const accessToken = session.user.accessToken;
-
+  console.log("komst í getPosts")
   const response = await axios.get(`https://oauth.reddit.com/r/${subreddit}.json`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,

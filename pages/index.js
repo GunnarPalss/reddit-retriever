@@ -10,7 +10,7 @@ export default function Home() {
   const fetchPosts = async () => {
     if (!subreddit) return;
     setLoading(true);
-    
+      console.log("komst í fetchPosts")
       const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
       const data = await response.json();
       setPosts(data);
