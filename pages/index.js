@@ -63,7 +63,7 @@ export default function Home() {
             >
               Sign out
             </button>
-            <h2 className="mt-4 text-2xl">Welcome, {session.user.name}</h2>
+            <h2 id="welcome" className="mt-4 text-2xl">Welcome, {session.user.name}</h2>
           </div>
         )}
         <button
