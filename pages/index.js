@@ -1,3 +1,4 @@
+// pages/index.js
 import { useEffect, useState } from 'react';
 
 const Home = () => {
@@ -6,8 +7,10 @@ const Home = () => {
   const [subreddit, setSubreddit] = useState('technology');
 
   useEffect(() => {
-    const fetchPosts = async () => {
+        const fetchPosts = async () => {
+          console.log("fetching data")
         const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
+        console.log(response)
         const data = await response.json();
         setPosts(data);
         setLoading(false);
