@@ -1,69 +1,62 @@
-// pages/index.js
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
-const Home = () => {
+export default function Home() {
+  const { data: session } = useSession();
+  const [subreddit, setSubreddit] = useState('');
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [subreddit, setSubreddit] = useState('technology');
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-        const fetchPosts = async () => {
-          console.log("fetching data")
-        const response = await fetch(`/data.json`);
-        console.log(response)
-        const data = await response.json();
-        console.log(data)
-        setPosts(data);
-        setLoading(false);
-    };
-
-    fetchPosts();
-  }, [subreddit]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const input = e.target.elements.subreddit.value.trim();
-    if (input) {
-      setSubreddit(input);
-      setLoading(true);
-      setPosts([]);
+  const fetchPosts = async () => {
+    if (!subreddit) return;
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
+      const data = await response.json();
+      setPosts(data);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Reddit Viewer</h1>
-      <form onSubmit={handleSubmit}>
+    <div>
+      <h1>Reddit Posts Viewer</h1>
+      {!session ? (
+        <button onClick={() => signIn('reddit')}>Sign in with Reddit</button>
+      ) : (
+        <div>
+          <button onClick={() => signOut()}>Sign out</button>
+          <h2>Welcome, {session.user.name}</h2>
+        </div>
+      )}
+
+      <div>
         <input
           type="text"
-          name="subreddit"
           placeholder="Enter subreddit"
-          defaultValue={subreddit}
-          style={{ padding: '5px', marginRight: '10px' }}
+          value={subreddit}
+          onChange={(e) => setSubreddit(e.target.value)}
         />
-        <button type="submit" style={{ padding: '5px 10px' }}>Fetch Posts</button>
-      </form>
+        <button onClick={fetchPosts}>Fetch Posts</button>
+      </div>
 
       {loading && <p>Loading...</p>}
 
-      {!loading && (
-        <ul style={{ listStyle: 'none', padding: '0' }}>
-          {posts.map((post) => (
-            <li key={post.data.id} style={{ margin: '10px 0' }}>
-              <a
-                href={`https://www.reddit.com${post.data.permalink}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ textDecoration: 'none', color: 'blue' }}
-              >
-                {post.data.title}
+      {posts.length > 0 && (
+        <ul>
+          {posts.map((post, index) => (
+            <li key={index}>
+              <a href={post.url} target="_blank" rel="noopener noreferrer">
+                {post.title}
               </a>
+              <p>by {post.author} - {post.score} upvotes</p>
             </li>
           ))}
         </ul>
       )}
     </div>
   );
-};
-
-export default Home;
+}
