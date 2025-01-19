@@ -3,3 +3,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    background-color: rgb(50, 50, 50);
+}
+
+h1, #posts {
+    color: rgb(255, 69, 0)
+}
