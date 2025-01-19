@@ -9,7 +9,7 @@ const Home = () => {
   useEffect(() => {
         const fetchPosts = async () => {
           console.log("fetching data")
-        const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
+        const response = await fetch(`/data.json`);
         console.log(response)
         const data = await response.json();
         console.log(data)
