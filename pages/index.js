@@ -10,21 +10,20 @@ export default function Home() {
   const fetchPosts = async () => {
     if (!subreddit) return;
     setLoading(true);
-    
       const response = await fetch(`/api/getPosts?subreddit=${subreddit}`);
+
       const data = await response.json();
       setPosts(data);
-    
-    
+
       setLoading(false);
     
   };
 
   return (
     <div>
-      <h1>Reddit Posts Viewer</h1>
+      <h1>Reddit Retriever</h1>
       {!session ? (
-        <button onClick={() => signIn('reddit')}>Sign in with Reddit</button>
+        <button onClick={() => signIn('reddit')}>Sign in</button>
       ) : (
         <div>
           <button onClick={() => signOut()}>Sign out</button>
