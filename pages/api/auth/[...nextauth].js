@@ -8,6 +8,7 @@ export default NextAuth({
       clientSecret: process.env.REDDIT_CLIENT_SECRET,
       authorizationUrl: 'https://www.reddit.com/api/v1/authorize',
       scope: 'read',
+      redirectUri: 'https://reddit-retriever.vercel.app/api/auth/callback/reddit'
     }),
   ],
   secret: process.env.JWT_SECRET,
