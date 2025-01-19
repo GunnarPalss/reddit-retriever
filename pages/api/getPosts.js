@@ -9,6 +9,8 @@ export default async function handler(req, res) {
       url: post.data.url,
       author: post.data.author,
       score: post.data.score,
+      thumbnail: post.data.thumbnail,
+      selftext: post.data.selftext
     }));
 
     res.status(200).json(posts);
