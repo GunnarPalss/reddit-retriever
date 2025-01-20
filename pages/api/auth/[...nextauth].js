@@ -4,8 +4,8 @@ import RedditProvider from "next-auth/providers/reddit";
 export default NextAuth({
   providers: [
     RedditProvider({
-      clientId: "tGol9A4DEUCbSv7683rAbw",
-      clientSecret: "TGcddlES_LekJAJuG_WWRERIo_kLrQ",
+      clientId: process.env.REDDIT_CLIENT_ID,
+      clientSecret: process.env.REDDIT_CLIENT_SECRET,
       authorization: 'https://www.reddit.com/api/v1/authorize',
     }),
   ],
@@ -17,5 +17,5 @@ export default NextAuth({
       return session;
     },
   },
-  secret: "yQC4q7eylC0E+YBEHhp4tesKcc6EbUeHiqFNa1DoLi4=",
+  secret: process.env.JWT_SECRET,
 });
